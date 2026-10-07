@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sport Injury Guide — Sport jarohatlaridan himoyalanish</title>
+<style>
+  :root {
+    --bg: #f5f8fb;
+    --surface: #ffffff;
+    --text: #17222d;
+    --muted: #5b6b7a;
+    --border: #dde5ec;
+    --brand: #0f7b6c;
+    --brand-dark: #0a5c51;
+    --before: #1d6fd1;
+    --before-bg: #e8f1fc;
+    --during: #c77700;
+    --during-bg: #fff3df;
+    --injury: #c8342f;
+    --injury-bg: #fdeceb;
+    --shadow: 0 2px 10px rgba(20, 40, 60, .07);
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f161d; --surface: #18222c; --text: #e8eef4; --muted: #9fb0bf; --border: #2a3744;
+      --brand: #3cc4af; --brand-dark: #2aa591;
+      --before: #6fb0ff; --before-bg: #14263b;
+      --during: #ffb347; --during-bg: #33260f;
+      --injury: #ff7b75; --injury-bg: #3a1a19;
+      --shadow: 0 2px 10px rgba(0, 0, 0, .4);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f161d; --surface: #18222c; --text: #e8eef4; --muted: #9fb0bf; --border: #2a3744;
+    --brand: #3cc4af; --brand-dark: #2aa591;
+    --before: #6fb0ff; --before-bg: #14263b;
+    --during: #ffb347; --during-bg: #33260f;
+    --injury: #ff7b75; --injury-bg: #3a1a19;
+    --shadow: 0 2px 10px rgba(0, 0, 0, .4);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 72px); }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  .nav {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .nav-inner {
+    max-width: 1100px; margin: 0 auto; padding: 10px 16px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .logo { font-weight: 800; color: var(--brand); white-space: nowrap; text-decoration: none; }
+  .nav ul {
+    list-style: none; margin: 0; padding: 0; display: flex; gap: 6px;
+    overflow-x: auto; flex: 1; scrollbar-width: none;
+  }
+  .nav ul::-webkit-scrollbar { display: none; }
+  .nav a.link {
+    display: block; padding: 6px 12px; border-radius: 999px; white-space: nowrap;
+    color: var(--text); text-decoration: none; font-size: .92rem; border: 1px solid transparent;
+  }
+  .nav a.link:hover { background: var(--bg); border-color: var(--border); }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--brand-dark), var(--brand));
+    color: #fff; text-align: center; padding: 64px 20px 72px;
+  }
+  .hero h1 { margin: 0 0 12px; font-size: clamp(1.8rem, 5vw, 3rem); line-height: 1.15; }
+  .hero p { max-width: 640px; margin: 0 auto 26px; font-size: 1.08rem; opacity: .95; }
+  .btn {
+    display: inline-block; background: #fff; color: #0a5c51; font-weight: 700;
+    padding: 12px 26px; border-radius: 999px; text-decoration: none;
+    transition: transform .15s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+
+  /* SECTION CARDS (overview) */
+  main { max-width: 1100px; margin: 0 auto; padding: 0 16px 40px; }
+  .overview {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px;
+    margin-top: -36px; position: relative;
+  }
+  .ov-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    padding: 18px 10px; text-align: center; text-decoration: none; color: var(--text);
+    box-shadow: var(--shadow); transition: transform .15s;
+  }
+  .ov-card:hover { transform: translateY(-4px); }
+  .ov-card .emoji { font-size: 2rem; display: block; }
+  .ov-card strong { display: block; margin-top: 4px; }
+
+  /* BODY PART SECTIONS */
+  .part { margin-top: 56px; }
+  .part h2 {
+    display: flex; align-items: center; gap: 12px;
+    font-size: clamp(1.5rem, 4vw, 2rem); margin: 0 0 6px;
+  }
+  .part h2 .emoji {
+    display: inline-grid; place-items: center; width: 52px; height: 52px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px; font-size: 1.7rem;
+  }
+  .part .intro { color: var(--muted); margin: 0 0 20px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    padding: 20px; box-shadow: var(--shadow); border-top: 5px solid var(--c);
+  }
+  .card h3 { margin: 0 0 12px; font-size: 1.1rem; color: var(--c); }
+  .card h4 { margin: 14px 0 6px; font-size: .95rem; }
+  .card ul { margin: 0; padding-left: 20px; }
+  .card li { margin-bottom: 6px; }
+  .before { --c: var(--before); }
+  .during { --c: var(--during); }
+  .injury { --c: var(--injury); }
+
+  .doctor {
+    margin-top: 14px; padding: 12px 14px; border-radius: 12px;
+    background: var(--injury-bg); border: 1px solid var(--injury);
+    font-size: .95rem;
+  }
+  .doctor strong { color: var(--injury); display: block; margin-bottom: 4px; }
+  .doctor ul { margin: 0; padding-left: 18px; }
+
+  /* RICE */
+  .rice { margin-top: 64px; }
+  .rice h2 { margin: 0 0 16px; }
+  .rice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+  .rice-item {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    padding: 18px; text-align: center; box-shadow: var(--shadow);
+  }
+  .rice-item .letter { font-size: 2.2rem; font-weight: 800; color: var(--brand); line-height: 1; }
+  .rice-item p { margin: 8px 0 0; color: var(--muted); font-size: .95rem; }
+
+  .warning {
+    margin-top: 40px; padding: 18px 20px; border-radius: 14px;
+    background: var(--during-bg); border: 1px solid var(--during); font-size: .95rem;
+  }
+
+  footer {
+    text-align: center; padding: 28px 16px; color: var(--muted);
+    border-top: 1px solid var(--border); font-size: .9rem;
+  }
+
+  @media (max-width: 600px) {
+    .logo { font-size: .9rem; }
+    .hero { padding: 48px 18px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="#top">🏅 Sport Injury Guide</a>
+    <ul>
+      <li><a class="link" href="#tizza">🦵 Tizza</a></li>
+      <li><a class="link" href="#oyoq">🦶 Oyoq</a></li>
+      <li><a class="link" href="#qol">💪 Qo‘l</a></li>
+      <li><a class="link" href="#bel">🏋️ Bel</a></li>
+      <li><a class="link" href="#topiq">🦶 To‘piq</a></li>
+    </ul>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <h1>Sport jarohatlaridan himoyalanish</h1>
+  <p>Sportdan oldin, sport paytida va jarohat bo‘lganda nima qilish kerakligi haqida oddiy va foydali qo‘llanma.</p>
+  <a class="btn" href="#tizza">Boshlash</a>
+</section>
+
+<main>
+  <nav class="overview" aria-label="Tana qismlari">
+    <a class="ov-card" href="#tizza"><span class="emoji">🦵</span><strong>Tizza</strong></a>
+    <a class="ov-card" href="#oyoq"><span class="emoji">🦶</span><strong>Oyoq</strong></a>
+    <a class="ov-card" href="#qol"><span class="emoji">💪</span><strong>Qo‘l</strong></a>
+    <a class="ov-card" href="#bel"><span class="emoji">🏋️</span><strong>Bel</strong></a>
+    <a class="ov-card" href="#topiq"><span class="emoji">🦶</span><strong>To‘piq</strong></a>
+  </nav>
+
+  <!-- TIZZA -->
+  <section class="part" id="tizza">
+    <h2><span class="emoji">🦵</span> Tizza</h2>
+    <p class="intro">Tizza yugurish, sakrash va to‘p o‘yinlarida eng ko‘p zo‘riqadigan bo‘g‘imlardan biri.</p>
+    <div class="grid">
+      <article class="card before">
+        <h3>Sportdan oldin</h3>
+        <h4>Warm-up</h4>
+        <ul>
+          <li>5–10 daqiqa yengil yugurish yoki velotrenajyor</li>
+          <li>Tizzani aylantirish, yengil o‘tirib-turish</li>
+        </ul>
+        <h4>Stretching</h4>
+        <ul>
+          <li>Son oldi (kvadritseps) va orqasi (hamstring) cho‘zilishi</li>
+          <li>Boldir mushaklarini cho‘zish</li>
+        </ul>
+        <h4>To‘g‘ri oyoq kiyim</h4>
+        <ul>
+          <li>Amortizatsiyali, sport turiga mos krossovka</li>
+          <li>Eskirgan poyabzalni almashtirish</li>
+        </ul>
+      </article>
+      <article class="card during">
+        <h3>Sport paytida</h3>
+        <h4>To‘g‘ri texnika</h4>
+        <ul>
+          <li>O‘tirganda va qo‘nganda tizza barmoqlar yo‘nalishida bo‘lsin</li>
+          <li>Sakragandan keyin yumshoq, bukilgan tizza bilan qo‘ning</li>
+        </ul>
+        <h4>Haddan tashqari zo‘riqmaslik</h4>
+        <ul>
+          <li>Yuklamani asta-sekin (haftasiga ~10%) oshiring</li>
+          <li>Og‘riq paydo bo‘lsa to‘xtang</li>
+        </ul>
+      </article>
+      <article class="card injury">
+        <h3>Jarohat bo‘lsa</h3>
+        <h4>Nima qilish kerak?</h4>
+        <ul>
+          <li>Mashqni darhol to‘xtating</li>
+          <li>Dam bering, tizzani yuqoriroq ko‘tarib qo‘ying</li>
+          <li>Sovuq kompress (10–15 daqiqa, mato orqali)</li>
+          <li>Elastik bint bilan yengil siqing</li>
+        </ul>
+        <div class="doctor">
+          <strong>⚠️ Shifokorga murojaat qiling, agar:</strong>
+          <ul>
+            <li>Tizza tez shishsa yoki “shiqillagan” ovoz eshitilsa</li>
+            <li>Oyoqqa tayana olmasangiz yoki tizza “bo‘shashsa”</li>
+            <li>Tizza to‘liq bukilmasa/yozilmasa</li>
+            <li>Og‘riq 3–5 kunda kamaymasa</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- OYOQ -->
+  <section class="part" id="oyoq">
+    <h2><span class="emoji">🦶</span> Oyoq</h2>
+    <p class="intro">Oyoq kafti, panja va boldir yugurish hamda sakrash vaqtida katta yuk ko‘taradi.</p>
+    <div class="grid">
+      <article class="card before">
+        <h3>Sportdan oldin</h3>
+        <h4>Warm-up</h4>
+        <ul>
+          <li>Yengil yurish va yugurish, oyoq uchida ko‘tarilish</li>
+          <li>Oyoqni silkitish va aylantirish</li>
+        </ul>
+        <h4>Stretching</h4>
+        <ul>
+          <li>Boldir va Axilles paychasini cho‘zish</li>
+          <li>Oyoq tagi (plantar fastsiya) cho‘zilishi</li>
+        </ul>
+        <h4>To‘g‘ri oyoq kiyim</h4>
+        <ul>
+          <li>O‘lchami to‘g‘ri, barmoqlar uchun joyi bor poyabzal</li>
+          <li>Kerak bo‘lsa ortopedik tagliklar</li>
+        </ul>
+      </article>
+      <article class="card during">
+        <h3>Sport paytida</h3>
+        <h4>To‘g‘ri texnika</h4>
+        <ul>
+          <li>Yugurganda oyoq tanangiz ostiga tushsin, juda oldinga tashlamang</li>
+          <li>Notekis yuzada ehtiyot bo‘ling</li>
+        </ul>
+        <h4>Haddan tashqari zo‘riqmaslik</h4>
+        <ul>
+          <li>Qattiq yuzada uzoq yugurishni cheklang</li>
+          <li>Mashqlar orasida dam kunlarini qoldiring</li>
+        </ul>
+      </article>
+      <article class="card injury">
+        <h3>Jarohat bo‘lsa</h3>
+        <h4>Nima qilish kerak?</h4>
+        <ul>
+          <li>Yukni to‘xtating, poyabzalni yechib oyoqni ko‘zdan kechiring</li>
+          <li>Sovuq kompress va oyoqni baland ko‘tarish</li>
+          <li>Bir necha kun yengillashtirilgan rejim</li>
+        </ul>
+        <div class="doctor">
+          <strong>⚠️ Shifokorga murojaat qiling, agar:</strong>
+          <ul>
+            <li>Suyakda nuqtali kuchli og‘riq (stress sinishi belgisi)</li>
+            <li>Ko‘karish, aniq shish yoki shakli o‘zgarishi</li>
+            <li>Yura olmaslik yoki oyoq uvishishi</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- QO'L -->
+  <section class="part" id="qol">
+    <h2><span class="emoji">💪</span> Qo‘l</h2>
+    <p class="intro">Yelka, tirsak va bilak tennis, suzish, og‘irlik ko‘tarish va jang sport turlarida zo‘riqadi.</p>
+    <div class="grid">
+      <article class="card before">
+        <h3>Sportdan oldin</h3>
+        <h4>Warm-up</h4>
+        <ul>
+          <li>Yelka va qo‘llarni aylantirish (kichikdan kattaga)</li>
+          <li>Yengil rezina lenta bilan faollashtirish</li>
+        </ul>
+        <h4>Stretching</h4>
+        <ul>
+          <li>Yelka, tirsak va bilak mushaklarini cho‘zish</li>
+          <li>Ko‘krak mushaklari cho‘zilishi</li>
+        </ul>
+        <h4>To‘g‘ri jihoz</h4>
+        <ul>
+          <li>Mos o‘lchamdagi raketka, qo‘lqop, bilak himoyasi</li>
+          <li>Raketka yoki shtanganing tutqichi qo‘lingizga mos bo‘lsin</li>
+        </ul>
+      </article>
+      <article class="card during">
+        <h3>Sport paytida</h3>
+        <h4>To‘g‘ri texnika</h4>
+        <ul>
+          <li>Og‘irlikni boshida yengil tanlab, texnikani o‘rganing</li>
+          <li>Yelkani quloqqa ko‘tarmang, kurakni barqaror ushlang</li>
+        </ul>
+        <h4>Haddan tashqari zo‘riqmaslik</h4>
+        <ul>
+          <li>Bir xil harakatni toliqquncha takrorlamang</li>
+          <li>Bosh ustidan harakatlarni me’yorda bajaring</li>
+        </ul>
+      </article>
+      <article class="card injury">
+        <h3>Jarohat bo‘lsa</h3>
+        <h4>Nima qilish kerak?</h4>
+        <ul>
+          <li>To‘xtang va qo‘lni qulay holatda ushlang</li>
+          <li>Sovuq kompress, kerak bo‘lsa ro‘mol-bog‘lam</li>
+          <li>Og‘riq beradigan harakatlarni vaqtincha chetlab o‘ting</li>
+        </ul>
+        <div class="doctor">
+          <strong>⚠️ Shifokorga murojaat qiling, agar:</strong>
+          <ul>
+            <li>Qo‘lni ko‘tara olmasangiz yoki yelka “chiqqandek” tuyulsa</li>
+            <li>Barmoqlarda uvishish yoki karaxtlik bo‘lsa</li>
+            <li>Suyak shakli o‘zgargan yoki qattiq shish bor</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- BEL -->
+  <section class="part" id="bel">
+    <h2><span class="emoji">🏋️</span> Bel</h2>
+    <p class="intro">Bel og‘irlik ko‘tarish, burilish va uzoq o‘tirgandan keyingi keskin yuklarda eng ko‘p zarar ko‘radi.</p>
+    <div class="grid">
+      <article class="card before">
+        <h3>Sportdan oldin</h3>
+        <h4>Warm-up</h4>
+        <ul>
+          <li>Yengil kardio va tos suyagini aylantirish</li>
+          <li>“Mushuk–sigir” kabi umurtqa harakatchanligi mashqlari</li>
+        </ul>
+        <h4>Stretching</h4>
+        <ul>
+          <li>Hamstring va son bukuvchi mushaklarni cho‘zish</li>
+          <li>Tizzalarni ko‘krakka tortish</li>
+        </ul>
+        <h4>To‘g‘ri jihoz</h4>
+        <ul>
+          <li>Barqaror, mos poyabzal</li>
+          <li>Og‘ir yuk ko‘tarishda kamar (faqat kerak bo‘lganda)</li>
+        </ul>
+      </article>
+      <article class="card during">
+        <h3>Sport paytida</h3>
+        <h4>To‘g‘ri texnika</h4>
+        <ul>
+          <li>Yuk ko‘tarishda umurtqani to‘g‘ri tuting, tizza va tos bilan ko‘taring</li>
+          <li>Yukni tanaga yaqin ushlang, belni burib ko‘tarmang</li>
+        </ul>
+        <h4>Haddan tashqari zo‘riqmaslik</h4>
+        <ul>
+          <li>Texnika buzilsa, og‘irlikni kamaytiring</li>
+          <li>Core (qorin va bel) mushaklarini muntazam mustahkamlang</li>
+        </ul>
+      </article>
+      <article class="card injury">
+        <h3>Jarohat bo‘lsa</h3>
+        <h4>Nima qilish kerak?</h4>
+        <ul>
+          <li>Mashqni to‘xtating, qulay holatda dam oling</li>
+          <li>Uzoq yotib qolmang: yengil yurish tiklanishga yordam beradi</li>
+          <li>Issiq yoki sovuq kompress (qaysi biri qulay bo‘lsa)</li>
+        </ul>
+        <div class="doctor">
+          <strong>⚠️ Shifokorga zudlik bilan murojaat qiling, agar:</strong>
+          <ul>
+            <li>Oyoqda zaiflik, uvishish yoki og‘riq tushsa</li>
+            <li>Siydik yoki ich ushlash buzilsa</li>
+            <li>Yiqilish yoki zarbadan keyin kuchli bel og‘rig‘i</li>
+            <li>Og‘riq 1–2 haftada o‘tmasa</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- TO'PIQ -->
+  <section class="part" id="topiq">
+    <h2><span class="emoji">🦶</span> To‘piq</h2>
+    <p class="intro">To‘piqning burilishi (cho‘zilishi) — sportdagi eng keng tarqalgan jarohatlardan biri.</p>
+    <div class="grid">
+      <article class="card before">
+        <h3>Sportdan oldin</h3>
+        <h4>Warm-up</h4>
+        <ul>
+          <li>To‘piq bilan “alifbo” chizish, oyoq uchida va tovonda yurish</li>
+          <li>Yengil sakrash mashqlari</li>
+        </ul>
+        <h4>Stretching</h4>
+        <ul>
+          <li>Boldir va Axilles paychasi cho‘zilishi</li>
+          <li>Bir oyoqda turish bilan muvozanat mashqi</li>
+        </ul>
+        <h4>To‘g‘ri oyoq kiyim</h4>
+        <ul>
+          <li>To‘piqni yaxshi ushlaydigan poyabzal</li>
+          <li>Oldingi jarohat bo‘lgan bo‘lsa, to‘piq bandaji yoki tutgich</li>
+        </ul>
+      </article>
+      <article class="card during">
+        <h3>Sport paytida</h3>
+        <h4>To‘g‘ri texnika</h4>
+        <ul>
+          <li>Qo‘nishda butun oyoq kaftiga tayaning</li>
+          <li>Notekis joy va boshqa o‘yinchi oyog‘iga ehtiyot bo‘ling</li>
+        </ul>
+        <h4>Haddan tashqari zo‘riqmaslik</h4>
+        <ul>
+          <li>Charchoqda to‘piq beqaror bo‘ladi — vaqtida to‘xtang</li>
+          <li>Muvozanat mashqlarini haftasiga bir necha marta qiling</li>
+        </ul>
+      </article>
+      <article class="card injury">
+        <h3>Jarohat bo‘lsa</h3>
+        <h4>Nima qilish kerak?</h4>
+        <ul>
+          <li>O‘yinni to‘xtating, oyoqni ko‘taring</li>
+          <li>Sovuq kompress (10–15 daqiqa, har 2–3 soatda)</li>
+          <li>Elastik bint bilan yengil siqing</li>
+          <li>Og‘riq kamayganda yengil harakatlarni boshlang</li>
+        </ul>
+        <div class="doctor">
+          <strong>⚠️ Shifokorga murojaat qiling, agar:</strong>
+          <ul>
+            <li>To‘piq suyagi ustida bosganda kuchli og‘riq bo‘lsa</li>
+            <li>4 qadam yurishga ham qiynalsangiz</li>
+            <li>Oyoq shakli o‘zgarsa yoki katta ko‘karish paydo bo‘lsa</li>
+            <li>Bir necha kunda yaxshilanish bo‘lmasa</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- RICE -->
+  <section class="rice">
+    <h2>🧊 Birinchi yordam: R.I.C.E qoidasi</h2>
+    <div class="rice-grid">
+      <div class="rice-item"><div class="letter">R</div><strong>Rest</strong><p>Dam — jarohatlangan joyga yuk bermang.</p></div>
+      <div class="rice-item"><div class="letter">I</div><strong>Ice</strong><p>Muz — 10–15 daqiqa, mato orqali.</p></div>
+      <div class="rice-item"><div class="letter">C</div><strong>Compression</strong><p>Siqish — elastik bint bilan yengil.</p></div>
+      <div class="rice-item"><div class="letter">E</div><strong>Elevation</strong><p>Ko‘tarish — yurak sathidan yuqoriroq.</p></div>
+    </div>
+    <div class="warning">
+      <strong>Muhim:</strong> Ushbu sayt faqat umumiy ma’lumot beradi va shifokor maslahatini almashtirmaydi. Kuchli og‘riq, shish yoki shubha bo‘lsa, albatta mutaxassisga murojaat qiling.
+    </div>
+  </section>
+</main>
+
+<footer>
+  🏅 Sport Injury Guide — Sog‘lom sport, xavfsiz harakat.
+</footer>
+
+</body>
+</html>
